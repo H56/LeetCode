@@ -6,13 +6,16 @@ using namespace std;
 
 int main(void) {
 	Solution so;
-    TreeNode *root = new TreeNode(0);
-    root->left = new TreeNode(1);
-    vector<string> re = so.binaryTreePaths(root);
-    for (auto &it : re) {
-        cout << it << endl;
+    vector<int> vec;
+    int n;
+    while (cin >> n) {
+        for (int i = 0; i < n; ++i) {
+            int tmp;
+            cin >> tmp;
+            vec.push_back(tmp);
+        }
+        cout << so.largestNumber(vec);
     }
-    cout << "fuck github" << endl;
     system("pause");
 	return 0;
 }

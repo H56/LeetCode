@@ -1274,7 +1274,7 @@ ListNode* Solution::rotateRight(ListNode* head, int k) {
 	back->next = NULL;
 	return head;
 }
-
+/*
 string Solution::largestNumber(vector<int>& nums) {
 	string strRet;
 	if (nums.size() <= 0) {
@@ -1299,7 +1299,7 @@ string Solution::largestNumber(vector<int>& nums) {
 	for (auto it = vec2.begin(); it != vec2.end(); ++it) {
 		;
 	}
-}
+}*/
 
 ListNode* Solution::deleteDuplicates1(ListNode* head) {
 	if (head == NULL) {
@@ -2460,4 +2460,19 @@ vector<string> Solution::binaryTreePaths(TreeNode* root) {
     vector<int> vecPath;
     binaryTreePaths(vec, root, vecPath);
     return vec;
+}
+
+string Solution::largestNumber(vector<int>& nums) {
+    vector<string> vec; vec.reserve(nums.size());
+    for (auto &it : nums) {
+        vec.push_back(to_string(it));
+    }
+    sort(vec.begin(), vec.end(), [](const string &a, const string &b) {
+        return a + b > b + a;
+    });
+    string strRet;
+    for (auto &it : vec) {
+        strRet += it;
+    }
+    return strRet[0] == '0' ? "0" : strRet;
 }

@@ -97,7 +97,7 @@ public:
 	bool isHappy(int n);
 	vector<vector<int> > zigzagLevelOrder(TreeNode *root);
 	ListNode* rotateRight(ListNode* head, int k);
-	string largestNumber(vector<int>& nums);
+	//string largestNumber(vector<int>& nums);
 	ListNode* deleteDuplicates1(ListNode* head);
 	ListNode* deleteDuplicates(ListNode* head);
 	int canCompleteCircuit(vector<int>& gas, vector<int>& cost);
@@ -179,5 +179,6 @@ private:
 public:
      int addDigits(int num);
      vector<string> binaryTreePaths(TreeNode* root);
+     string largestNumber(vector<int>& nums);
 };
 
