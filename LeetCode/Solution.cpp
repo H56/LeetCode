@@ -2400,14 +2400,25 @@ int Solution::maximalSquare(vector<vector<char>>& matrix) {
 	return maxSquare*maxSquare;
 }
 
-void Solution::onceSortBigHeap(vector<int> &vec, int end) {
-    if (end == 0) {
-        return;
-    }
-    int *start = &(vec[0]);
-    for (int i = vec.size() - 1; i >= 0; i >>= 1) {
-
-    }
+void Solution::onceSortBigHeap(vector<int> &vec, int start) {
+    int &root = vec[start];
+    if ((start = (start + 1) << 1) < vec.size()) {
+        if (vec[start] > vec[start - 1] && vec[start] > root) {
+            int tmp = vec[start];
+            vec[start] = root;
+            root = tmp;
+            onceSortBigHeap(vec, start);
+        } else if(vec[start - 1] > root) {
+            int tmp = vec[start - 1];
+            vec[start - 1] = root;
+            root = tmp;
+            onceSortBigHeap(vec, start - 1);
+        }
+    } else if (start - 1 < vec.size() && vec[start - 1] > root) {
+        int tmp = vec[start - 1];
+        vec[start - 1] = root;
+        root = tmp;
+    }    
 }
 
 int Solution::addDigits(int num) {
@@ -2475,4 +2486,76 @@ string Solution::largestNumber(vector<int>& nums) {
         strRet += it;
     }
     return strRet[0] == '0' ? "0" : strRet;
+}
+
+TreeNode* Solution::buildTree(vector<int>& inorder, vector<int>& postorder, int start, int end) {
+    TreeNode* root = NULL;
+    if (postorder.size() > 0) {
+        int tmp = postorder[postorder.size() - 1];
+        postorder.pop_back();
+        int i = start;
+        while (i <= end && inorder[i++] != tmp);
+        // must be found
+        root = new TreeNode(tmp);
+        root->right = buildTree(inorder, postorder, i, end);
+        root->left = buildTree(inorder, postorder, start, i - 2);        
+    }
+    return root;
+}
+
+TreeNode* Solution::buildTree(vector<int>& inorder, vector<int>& postorder) {
+    if (postorder.size() > 0 && inorder.size() == postorder.size()) {
+        return buildTree(inorder, postorder, 0, inorder.size() - 1);
+    }
+    return NULL;
+}
+
+void Solution::nextPermutation(vector<int>& nums) {
+    if (nums.size() > 0) {
+        for (int i = nums.size() - 2; i >= 0; --i) {
+            for (int j = nums.size() - 1; j > i; --j) {
+                if (nums[j] > nums[i]) {
+                    int tmp = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = tmp;
+                    sort(nums.begin() + i + 1, nums.end());
+                    return;
+                }
+            }
+        }
+    }
+    sort(nums.begin(), nums.end());
+}
+
+int Solution::forward(vector<int> &nums, int &target) {
+    int begin = 0, end = nums.size() - 1, mid;
+    while (begin <= end) {
+        mid = (begin + end) >> 1;
+        if (nums[mid] < target) {
+            begin = mid + 1;
+        } else {
+            end = mid - 1;
+        }
+    }
+    return nums[begin] == target ? begin : -1;
+}
+
+int Solution::backward(vector<int> &nums, int &target) {
+    int begin = 0, end = nums.size() - 1, mid;
+    while (begin <= end) {
+        mid = (begin + end) >> 1;
+        if (nums[mid] <= target) {
+            begin = mid + 1;
+        } else {
+            end = mid - 1;
+        }
+    }
+    return nums[end] == target ? end : -1;
+}
+
+vector<int> Solution::searchRange(vector<int>& nums, int target) {
+    vector<int> ret;
+    ret.push_back(forward(nums, target));
+    ret.push_back(backward(nums, target));
+    return ret;
 }

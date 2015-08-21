@@ -10,6 +10,7 @@
 #include <time.h>
 #include <string>
 #include <unordered_set>
+#include <set>
 #include <fstream>
 #include <stack>
 #include <queue>
@@ -180,5 +181,14 @@ public:
      int addDigits(int num);
      vector<string> binaryTreePaths(TreeNode* root);
      string largestNumber(vector<int>& nums);
+
+     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder, int start, int end);
+     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder);
+     void nextPermutation(vector<int>& nums);
+private:
+         int forward(vector<int> &nums, int &target);
+         int backward(vector<int> &nums, int &target);
+public:
+    vector<int> searchRange(vector<int>& nums, int target);
 };
 

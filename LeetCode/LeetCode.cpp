@@ -5,17 +5,22 @@
 using namespace std;
 
 int main(void) {
-	Solution so;
-    vector<int> vec;
-    int n;
-    while (cin >> n) {
-        for (int i = 0; i < n; ++i) {
+	Solution so;    
+    int n, target;
+    while (cin >> n >> target) {
+        vector<int> vec;
+        for (auto i = 0; i < n; ++i) {
             int tmp;
             cin >> tmp;
             vec.push_back(tmp);
         }
-        cout << so.largestNumber(vec);
+        vec = so.searchRange(vec, target);
+        for (auto &it : vec) {
+            cout << it << " ";
+        }
+        cout << endl;
     }
+    
     system("pause");
 	return 0;
 }
