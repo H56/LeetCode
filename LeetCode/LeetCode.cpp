@@ -5,21 +5,9 @@
 using namespace std;
 
 int main(void) {
-	Solution so;    
-    int n, target;
-    while (cin >> n >> target) {
-        vector<int> vec;
-        for (auto i = 0; i < n; ++i) {
-            int tmp;
-            cin >> tmp;
-            vec.push_back(tmp);
-        }
-        vec = so.searchRange(vec, target);
-        for (auto &it : vec) {
-            cout << it << " ";
-        }
-        cout << endl;
-    }
+	Solution so;
+    vector<int> vec = { 1, 1, 1 };
+    cout << so.removeDuplicates(vec) << endl;;
     
     system("pause");
 	return 0;

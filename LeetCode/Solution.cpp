@@ -2559,3 +2559,88 @@ vector<int> Solution::searchRange(vector<int>& nums, int target) {
     ret.push_back(backward(nums, target));
     return ret;
 }
+
+void Solution::combine(vector<vector<int>> &result, vector<int> &helper, int &n, int k) {
+    if (k == 0) {
+        result.push_back(helper);
+        return;
+    }
+    for (int start = helper.size() > 0 ? helper[helper.size() - 1] + 1 : 1; start <= n - k + 1; ++start) {
+        helper.push_back(start);
+        combine(result, helper, n, k - 1);
+        helper.pop_back();
+    }
+}
+
+vector<vector<int>> Solution::combine(int n, int k) {
+    vector<vector<int>> result;
+    vector<int> helper;
+    combine(result, helper, n, k);
+    return result;
+}
+
+int Solution::numIslands(vector<vector<char>>& grid) {
+    return 0;
+}
+
+void Solution::susetsHelper(vector<vector<int>> &result, vector<int> &helper, vector<int> &nums, int start, int k) {
+    if (k == 0) {
+        result.push_back(helper);
+        return;
+    }
+    for (; start < nums.size() - k + 1; ++start) {
+        helper.push_back(nums[start]);
+        susetsHelper(result, helper, nums, start + 1, k - 1);
+        helper.pop_back();
+    }
+}
+
+vector<vector<int>> Solution::subsets(vector<int>& nums) {
+    vector<vector<int>> ret;
+    vector<int> helper;
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i <= nums.size(); ++i) {
+        susetsHelper(ret, helper, nums, 0, i);
+    }
+    return ret;
+}
+
+bool Solution::exist(vector<vector<char>>& board, string word) {
+    if (word.length() == 0) {
+        return true;
+    }
+    int pointer = 0;
+    for (auto &v : board) {
+        for (auto &it : v) {
+            if (it == word[pointer] && ++pointer == word.length()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int Solution::removeDuplicates(vector<int>& nums) {
+    if (nums.size() < 1) {
+        return 0;
+    }
+    int pre = nums[0] - 1, count = 1;
+    for (auto &it : nums) {
+        if (pre == it) {
+            if (++count > 2) {
+                it = INT_MIN;
+            }
+            continue;
+        }
+        count = 1;
+        pre = it;
+    }
+    pre = 1;
+    for (auto i = 1; i < nums.size(); ++i) {
+        while (i < nums.size() && nums[i] == INT_MIN) ++i;
+        if (i < nums.size()) {
+            nums[pre++] = nums[i];
+        }
+    }
+    return pre;
+}

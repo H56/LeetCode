@@ -190,5 +190,17 @@ private:
          int backward(vector<int> &nums, int &target);
 public:
     vector<int> searchRange(vector<int>& nums, int target);
+
+private:
+    void combine(vector<vector<int>> &result, vector<int> &helper, int &n, int k);
+public:
+    vector<vector<int>> combine(int n, int k);
+    int numIslands(vector<vector<char>>& grid);
+private:
+    void susetsHelper(vector<vector<int>> &result, vector<int> &helper, vector<int> &nums, int start, int k);
+public:
+    vector<vector<int>> subsets(vector<int>& nums);
+    bool exist(vector<vector<char>>& board, string word);
+    int removeDuplicates(vector<int>& nums);
 };
 
