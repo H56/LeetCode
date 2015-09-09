@@ -209,5 +209,6 @@ public:
     int removeDuplicates(vector<int>& nums);
 	int hIndex(vector<int>& citations);
 	vector<Interval> insert(vector<Interval>& intervals, Interval newInterval);
+	string numberToWords(int num);
 };
 

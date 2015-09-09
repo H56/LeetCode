@@ -33,26 +33,10 @@ int main(void) {
 	}
 */
 	Solution so;
-	vector<Interval> intervals;
-	intervals.push_back(Interval(1, 5));
-	vector<Interval> result = so.insert(intervals, Interval(0, 6));
-	print(result);
-
-	result = so.insert(intervals, Interval(6, 8));
-	print(result);
-
-	result = so.insert(intervals, Interval(2, 3));
-	print(result);
-
-	result = so.insert(intervals, Interval(0, 0));
-	print(result);
-
-	intervals.push_back(Interval(6, 7));
-	result = so.insert(intervals, Interval(5, 6));
-	print(result);
-
-	result = so.insert(intervals, Interval(5, 5));
-	print(result);
+	int n;
+	while (cin >> n) {
+		cout << so.numberToWords(n) << endl;
+	}
 
 
     system("pause");

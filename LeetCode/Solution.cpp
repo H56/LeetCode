@@ -2720,3 +2720,46 @@ vector<Interval> Solution::insert(vector<Interval>& intervals, Interval newInter
 	}
 	return result;
 }
+
+string Solution::numberToWords(int num) {
+	const static string base[] = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", 
+	"Seventeen", "Eighteen", "Nineteen"};
+	const static string Tens[] = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+	string result = "";
+	if (num / 1000000000) {
+		result += numberToWords(num / 1000000000) + " " + "Billion";
+		string tmp = numberToWords(num % 1000000000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 1000000) {
+		result += numberToWords(num / 1000000) + " " + "Million";
+		string tmp = numberToWords(num % 1000000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 1000) {
+		result += numberToWords(num / 1000) + " " + "Thousand";
+		string tmp = numberToWords(num % 1000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 100) {
+		result += numberToWords(num / 100) + " " + "Hundred";
+		string tmp = numberToWords(num % 100);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (Tens[num / 10] == "") {
+		if (base[num] == "Zero") {
+			if (result == "") {
+				result = base[num];
+			}
+		} else {
+			result =  result == "" ? base[num] : result + " " + base[num];
+		}
+	} else {
+		result = result == "" ? Tens[num / 10] + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]) : " " + Tens[num / 10] + " " + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]);
+	}
+	return result;
+}
