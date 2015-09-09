@@ -18,14 +18,19 @@
 #include <iostream>
 #include <sstream>
 using namespace std;
-
+struct Interval {
+    int start;
+    int end;
+    Interval() : start(0), end(0) {}
+    Interval(int s, int e) : start(s), end(e) {}
+};
 class Solution {
 private:
     stringstream ss;
 	vector<vector<int>> vec2;
 	unordered_set<UndirectedGraphNode *> old;
 	bool bFlag;
-	const int UNREAD = INT_MAX;
+	const static int UNREAD = INT_MAX;
 public:
 	Solution();
 	~Solution();
@@ -202,5 +207,7 @@ public:
     vector<vector<int>> subsets(vector<int>& nums);
     bool exist(vector<vector<char>>& board, string word);
     int removeDuplicates(vector<int>& nums);
+	int hIndex(vector<int>& citations);
+	vector<Interval> insert(vector<Interval>& intervals, Interval newInterval);
 };
 

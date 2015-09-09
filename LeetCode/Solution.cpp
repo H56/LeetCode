@@ -2644,3 +2644,79 @@ int Solution::removeDuplicates(vector<int>& nums) {
     }
     return pre;
 }
+
+int Solution::hIndex(vector<int>& citations) {
+	sort(citations.begin(), citations.end(), [](int a, int b) {
+		return a < b;
+	});
+	int start = 0, last = citations.size(), end = last, mid;
+	while (start < end) {
+		mid = (start + end) / 2;
+		if (citations[mid] < last - mid) {
+			start = mid + 1;
+		} else {
+			end = mid;
+		}
+	}
+	return last - start;
+	//return citations[start] == last - start ? last - start : last - start + 1;
+/*
+	sort(citations.begin(), citations.end(), [](int a, int b) {
+		return a > b;
+	});
+	int result;
+	for (result = 0; result < citations.size() && citations[result] > result; ++result);
+	return result;
+*/
+
+/*
+	int size = citations.size();
+	vector<int> temp(citations.size() + 1);
+	for (auto &it : citations) {
+		++temp[it < size ? it : size];
+	}
+	int result = size, h = 0;
+	for (; result && (h += temp[result]) < result; --result);
+	return result <= 0 ? h : result;
+*/
+}
+
+vector<Interval> Solution::insert(vector<Interval>& intervals, Interval newInterval) {
+	vector<Interval> result;
+	if (intervals.size() <= 0) {
+		result.push_back(newInterval);
+		return result;
+	}
+	int start = 0, end = intervals.size(), mid;
+	while (start < end) {
+		mid = (start + end) >> 1;
+		if (intervals[mid].end < newInterval.start) {
+			start = mid + 1;
+		} else {
+			end = mid;
+		}
+	}
+	for (int i = 0; i < start; ++i) {
+		result.push_back(intervals[i]);
+	}
+	if (start >= intervals.size()) {
+		result.push_back(newInterval);
+		return result;
+	}
+	if (intervals[start].start <= newInterval.start && intervals[start].end >= newInterval.start) {
+		result.push_back(intervals[start]);
+		result[start].start = result[start].start < newInterval.start ? result[start].start : newInterval.start;
+		result[start].end = result[start].end < newInterval.end ? newInterval.end : result[start].end;
+		++start;
+	} else {
+		result.push_back(newInterval);
+	}
+	for (int i = start; i < intervals.size(); ++i) {
+		if (result[result.size() - 1].end >= intervals[i].start) {
+			result[result.size() - 1].end = result[result.size() - 1].end >= intervals[i].end ? result[result.size() - 1].end : intervals[i].end;
+		} else {
+			result.push_back(intervals[i]);
+		}
+	}
+	return result;
+}
