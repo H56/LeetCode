@@ -350,7 +350,6 @@ int Solution::binarySearch(vector<int> &num, int data, int start) {
 	}
 	return -1;
 }
-
 int Solution::findMin(vector<int> &num) {
 	int iLength = num.size();
 	if (iLength <= 0) {
@@ -2643,4 +2642,273 @@ int Solution::removeDuplicates(vector<int>& nums) {
         }
     }
     return pre;
+}
+
+void Solution::setHelper(vector<vector<int>>& matrix, vector<int> &cols, int start, int end, int row) {
+    int size = matrix[0].size(), begin = start;
+    if (row >= matrix.size() || start < 0 || end >= size) {
+        return;
+    }
+    vector<int> &v = matrix[row];
+    bool bFlag = false;
+    for (int i = start; i <= end; ++i) {
+        if (!v[i]) {
+            cols.push_back(i);
+            for (int j = 0; j < matrix.size(); ++j) {
+                setHelper(matrix, cols, start, i - 1, row + 1);
+                start = i + 1;
+            }
+            bFlag = true;
+        }
+    }
+    if (bFlag) {
+        for (int i = begin; i <= end; ++i) {
+            v[i] = 0;
+        }
+    }
+    setHelper(matrix, cols, start, end, row + 1);
+}
+void Solution::setZeroes(vector<vector<int>>& matrix) {
+    int rowEnd, colEnd, colE = 0;
+    if (!(rowEnd = matrix.size()) || !(colEnd = matrix[0].size())) return;
+    --rowEnd, --colEnd;
+    vector<int> &rowsEnd = matrix[rowEnd];
+    for (int row = rowEnd; row >= 0; --row) {
+        vector<int> &rows = matrix[row];
+        if (!colE && !rows[colEnd]) colE = 1;
+        for (int col = colEnd - 1; col >= 0; --col) {
+            if (!rows[col]) {
+                rows[colEnd] = rowsEnd[col] = 0;
+            }
+        }
+    }
+    for (auto &v : matrix) {
+        for (int i = 0; i < colEnd; ++i) {
+            if (!v[colEnd] || !rowsEnd[i]) {
+                v[i] = 0;
+            }
+        }
+        if (colE) v[colEnd] = 0;
+    }
+}
+
+double Solution::myPow(double x, int n) {
+    int m = 1;
+    if (n < 0) {
+        n = -n;
+        x = 1 / x;
+    }
+    bool bFlag = true;
+    if (x < 0) {
+        bFlag = !(n & 0x1);
+        x = -x;
+    }
+    if (x == 1 || x == 0) {
+        return x;
+    }
+    if (n == 0) {
+        return 1;
+    }
+    double result = 1;
+    while (result > 2.2204460492503131e-016 && m <= n) {
+        if (m & n) {
+            result *= x;
+        }
+        x *= x;
+        m <<= 1;
+    }
+    return bFlag ? result : -result;
+}
+
+int Solution::kthSmallest1(TreeNode* root, int &k) {
+    if (root == NULL) return 0;
+    int left = kthSmallest(root->left, k);
+    if (--k == 0) {
+        return root->val;
+    }
+    int right = kthSmallest(root->right, k);
+    return left + right;
+}
+
+void Solution::getPermutation(vector<int> &result, int &start, int &n, int &k, int &count) {
+    if (n > 1) {
+        std::swap(*(result.begin() + start), *(result.begin() + start + (k - 1) / count));
+        sort(result.begin() + start, result.begin() + ++start + (k - 1) / count);
+        k -= (k - 1) / count * count;
+        count /= --n;
+        getPermutation(result, start, n, k, count);
+    }
+}
+string Solution::getPermutation(int n, int k) {
+    int count = 1, start = 0;
+    vector<int> helper;
+    for (int i = 1; i < n; ++i) {
+        count *= i;
+        helper.push_back(i);
+    }
+    helper.push_back(n);
+    getPermutation(helper, start, n, k, count);
+    string result;
+    for (auto &it : helper) {
+        result += to_string(it);
+    }
+    return result;
+}
+
+bool Solution::lispExpression(string &str, int &start, int &result) {
+	while (start < str.length() && str[start] == ' ') {
+		++start;
+	}
+	if (start < str.length()) {
+		if (str[start] == '(') {
+            long ret = 0;
+            while (++start < str.length() && str[start] == ' ');
+            if (start < str.length() && str[start] == '+') {
+                while (++start < str.length() && str[start] == ' ');
+                while (start < str.length() && str[start] != ')') {
+                    if (str[start] == '(') {
+                        int tmp;
+                        if (lispExpression(str, start, tmp)) {
+                            ret += tmp;
+                        } else {
+                            return false;
+                        }
+                    } else if (str[start] <= '9' && str[start] >= '0') {
+                        int tmp = 0;
+                        while (start < str.length() && str[start] <= '9' && str[start] >= '0') {
+                            tmp = tmp * 10 + str[start] - '0';
+                            ++start;
+                        }
+                        ret += tmp;
+                    } else {
+                        return false;
+                    }
+                    while (start < str.length() && str[start] == ' ') ++start;
+                }             
+            } else if (start < str.length() && str[start] == '-') {
+                while (++start < str.length() && str[start] == ' ');
+                int count = 0;
+                while (start < str.length() && str[start] != ')') {
+                    int tmp = 0;
+                    if (str[start] == '(') {
+                        if (!lispExpression(str, start, tmp)) {
+                            return false;
+                        }
+                    } else if (str[start] <= '9' && str[start] >= '0') {
+                        while (start < str.length() && str[start] <= '9' && str[start] >= '0') {
+                            tmp = tmp * 10 + str[start] - '0';
+                            ++start;
+                        }
+                    } else {
+                        return false;
+                    }
+                    while (start < str.length() && str[start] == ' ') ++start;
+                    if (++count >= 2) {
+                        ret = -ret - tmp;
+                        break;
+                    } else {
+                        ret = -tmp;
+                    }
+                }
+            } else if (start < str.length() && str[start] == '*') {
+                while (++start < str.length() && str[start] == ' ');
+                int count = 0;
+                ret = 1;
+                while (start < str.length() && str[start] != ')') {
+                    int tmp = 0;
+                    if (str[start] == '(') {
+                        if (!lispExpression(str, start, tmp)) {
+                            return false;
+                        }
+                    } else if (str[start] <= '9' && str[start] >= '0') {
+                        while (start < str.length() && str[start] <= '9' && str[start] >= '0') {
+                            tmp = tmp * 10 + str[start] - '0';
+                            ++start;
+                        }
+                    } else {
+                        return false;
+                    }
+                    while (start < str.length() && str[start] == ' ') ++start;
+                    ret *= tmp;
+                    ++count;
+                }
+                if (count < 2) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            if (start < str.length() && str[start] == ')') {
+                ++start;
+                result = ret;
+                return true;
+            } else {
+                ++start;
+                return false;
+            }
+		} else {
+            return false;
+		}
+	}
+}
+
+int Solution::totalNQueensHelper(int &n, int &count, vector<int> &helper) {
+    if (count == n) {
+        return 1;
+    }
+    int result = 0;
+    for (int i = 0; i < n; ++i) {
+        int cur = i, left = count - i + (n << 1), right = count + i + (n << 2);
+        if (!helper[i] && !helper[left] && !helper[right]) {
+            helper[i] = helper[left] = helper[right] = 1;
+            result += totalNQueensHelper(n, ++count, helper);;
+            --count;
+            helper[i] = helper[left] = helper[right] = 0;
+        }
+    }
+    return result;
+}
+
+int Solution::totalNQueens(int n) {
+    vector<int> helper(n * 6, 0);
+    int count = 0;
+    return totalNQueensHelper(n, count, helper);
+}
+
+int Solution::findMin1(vector<int>& nums) {
+    int start = 0, end = nums.size() - 1, mid;
+    while (start < end) {
+        mid = (start + end) >> 1;
+        if (nums[mid] < nums[start]) {
+            end = mid;
+        } else {
+            if (nums[start] < nums[end]) {
+                end = mid;
+            } else if (nums[start] == nums[end]) {
+                ++start;
+            } else {
+                start = mid + 1;
+            }
+        }
+    }
+    return nums[start];
+}
+double Solution::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    vector<int> &numsLarge = nums1.size() > nums2.size() ? nums1 : nums2;
+    vector<int> &numsSmall = nums2.size() >= nums1.size() ? nums2 : nums1;
+    int start1 = 0, end1 = nums1.size() - 1, mid1 = (start1 + end1) >> 1, start2 = 0, end2 = nums2.size(), mid2 = (start2 + end2) >> 1;
+    while (start1 < end1 || start2 < end2) {
+        if (start1 < end1) {
+            mid1 = (start1 + end1) >> 1;
+        }
+        if (start2 < end2) {
+            mid2 = (start2 + end2) >> 1;
+        }
+        if (nums1[mid1] < nums2[mid2]) {
+            start1 = mid1 + 1;
+            end2 = mid2 - 1;
+        }
+    }
+    cout << start1 << " " << start2 << endl;
+    return ((double)start1 + (double)start2) / 2.0;
 }

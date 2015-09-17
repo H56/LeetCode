@@ -3,12 +3,16 @@
 #include <iostream>
 #include "Solution.h"
 using namespace std;
-
 int main(void) {
-	Solution so;
-    vector<int> vec = { 1, 1, 1 };
-    cout << so.removeDuplicates(vec) << endl;;
-    
+	int n;
+    Solution so;
+    vector<int> nums1, nums2;
+    nums1 = { 1, 3, 4, 6 };
+    nums2 = { 2, 5 };
+    cout << so.findMedianSortedArrays(nums1, nums2) << endl;
+    nums1 = { 1, 3, 5, 7, 9 };
+    nums2 = { 2, 4, 6, 8, 10 };
+    cout << so.findMedianSortedArrays(nums1, nums2) << endl;
     system("pause");
 	return 0;
 }

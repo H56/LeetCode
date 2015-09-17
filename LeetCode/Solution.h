@@ -202,5 +202,22 @@ public:
     vector<vector<int>> subsets(vector<int>& nums);
     bool exist(vector<vector<char>>& board, string word);
     int removeDuplicates(vector<int>& nums);
+private:
+    void setHelper(vector<vector<int>>& matrix, vector<int> &cols, int start, int end, int row);
+public:
+    void setZeroes(vector<vector<int>>& matrix);
+    double myPow(double x, int n);
+    int kthSmallest1(TreeNode* root, int &k);
+private:
+    void getPermutation(vector<int> &result, int &start, int &n, int &k, int &count);
+public:
+    string getPermutation(int n, int k);
+	bool lispExpression(string &str, int &start, int &result);
+private:
+    int totalNQueensHelper(int &n, int &count, vector<int> &helper);
+public:
+    int totalNQueens(int n);
+    int findMin1(vector<int>& nums);
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2);
 };
 
