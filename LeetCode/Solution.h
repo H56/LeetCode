@@ -225,5 +225,8 @@ public:
     int totalNQueens(int n);
     int findMin1(vector<int>& nums);
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2);
+    int hIndex(vector<int>& citations);
+    vector<Interval> insert(vector<Interval>& intervals, Interval newInterval);
+    string numberToWords(int num);
 };
 

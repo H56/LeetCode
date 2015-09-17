@@ -2913,3 +2913,122 @@ double Solution::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) 
     cout << start1 << " " << start2 << endl;
     return ((double)start1 + (double)start2) / 2.0;
 }
+
+int Solution::hIndex(vector<int>& citations) {
+	sort(citations.begin(), citations.end(), [](int a, int b) {
+		return a < b;
+	});
+	int start = 0, last = citations.size(), end = last, mid;
+	while (start < end) {
+		mid = (start + end) / 2;
+		if (citations[mid] < last - mid) {
+			start = mid + 1;
+		} else {
+			end = mid;
+		}
+	}
+	return last - start;
+	//return citations[start] == last - start ? last - start : last - start + 1;
+/*
+	sort(citations.begin(), citations.end(), [](int a, int b) {
+		return a > b;
+	});
+	int result;
+	for (result = 0; result < citations.size() && citations[result] > result; ++result);
+	return result;
+*/
+
+/*
+	int size = citations.size();
+	vector<int> temp(citations.size() + 1);
+	for (auto &it : citations) {
+		++temp[it < size ? it : size];
+	}
+	int result = size, h = 0;
+	for (; result && (h += temp[result]) < result; --result);
+	return result <= 0 ? h : result;
+*/
+}
+
+vector<Interval> Solution::insert(vector<Interval>& intervals, Interval newInterval) {
+	vector<Interval> result;
+	if (intervals.size() <= 0) {
+		result.push_back(newInterval);
+		return result;
+	}
+	int start = 0, end = intervals.size(), mid;
+	while (start < end) {
+		mid = (start + end) >> 1;
+		if (intervals[mid].end < newInterval.start) {
+			start = mid + 1;
+		} else {
+			end = mid;
+		}
+	}
+	for (int i = 0; i < start; ++i) {
+		result.push_back(intervals[i]);
+	}
+	if (start >= intervals.size()) {
+		result.push_back(newInterval);
+		return result;
+	}
+	if (intervals[start].start <= newInterval.start && intervals[start].end >= newInterval.start) {
+		result.push_back(intervals[start]);
+		result[start].start = result[start].start < newInterval.start ? result[start].start : newInterval.start;
+		result[start].end = result[start].end < newInterval.end ? newInterval.end : result[start].end;
+		++start;
+	} else {
+		result.push_back(newInterval);
+	}
+	for (int i = start; i < intervals.size(); ++i) {
+		if (result[result.size() - 1].end >= intervals[i].start) {
+			result[result.size() - 1].end = result[result.size() - 1].end >= intervals[i].end ? result[result.size() - 1].end : intervals[i].end;
+		} else {
+			result.push_back(intervals[i]);
+		}
+	}
+	return result;
+}
+
+string Solution::numberToWords(int num) {
+	const static string base[] = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", 
+	"Seventeen", "Eighteen", "Nineteen"};
+	const static string Tens[] = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+	string result = "";
+	if (num / 1000000000) {
+		result += numberToWords(num / 1000000000) + " " + "Billion";
+		string tmp = numberToWords(num % 1000000000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 1000000) {
+		result += numberToWords(num / 1000000) + " " + "Million";
+		string tmp = numberToWords(num % 1000000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 1000) {
+		result += numberToWords(num / 1000) + " " + "Thousand";
+		string tmp = numberToWords(num % 1000);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (num / 100) {
+		result += numberToWords(num / 100) + " " + "Hundred";
+		string tmp = numberToWords(num % 100);
+		if (tmp != "Zero") {
+			result += " " + tmp;
+		}
+	} else if (Tens[num / 10] == "") {
+		if (base[num] == "Zero") {
+			if (result == "") {
+				result = base[num];
+			}
+		} else {
+			result =  result == "" ? base[num] : result + " " + base[num];
+		}
+	} else {
+		result = result == "" ? Tens[num / 10] + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]) : " " + Tens[num / 10] + " " + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]);
+	}
+	return result;
+}
