@@ -2894,23 +2894,21 @@ int Solution::findMin1(vector<int>& nums) {
     return nums[start];
 }
 double Solution::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-    vector<int> &numsLarge = nums1.size() > nums2.size() ? nums1 : nums2;
-    vector<int> &numsSmall = nums2.size() >= nums1.size() ? nums2 : nums1;
-    int start1 = 0, end1 = nums1.size() - 1, mid1 = (start1 + end1) >> 1, start2 = 0, end2 = nums2.size(), mid2 = (start2 + end2) >> 1;
-    while (start1 < end1 || start2 < end2) {
-        if (start1 < end1) {
-            mid1 = (start1 + end1) >> 1;
+    vector<int> &numsSmall = nums1.size() < nums2.size() ? nums1 : nums2;
+    vector<int> &numsLarge = nums1.size() >= nums2.size() ? nums1 : nums2;
+    int size1 = numsSmall.size(), size2 = numsLarge.size();
+    int leftSmall = 0, rightSmall = size1 - 1, midSmall, midAll;
+    while (leftSmall <= rightSmall) {
+        midSmall = (leftSmall + rightSmall) >> 1;
+        midAll = ((size2 + size1) >> 1) - midSmall;
+        if (numsSmall[midSmall] < numsLarge[midAll]) {
+            leftSmall = midSmall + 1;
         }
-        if (start2 < end2) {
-            mid2 = (start2 + end2) >> 1;
-        }
-        if (nums1[mid1] < nums2[mid2]) {
-            start1 = mid1 + 1;
-            end2 = mid2 - 1;
+        else {
+            rightSmall = midSmall - 1;
         }
     }
-    cout << start1 << " " << start2 << endl;
-    return ((double)start1 + (double)start2) / 2.0;
+    return midSmall;
 }
 
 int Solution::hIndex(vector<int>& citations) {
@@ -3030,7 +3028,4 @@ string Solution::numberToWords(int num) {
 		result = result == "" ? Tens[num / 10] + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]) : " " + Tens[num / 10] + " " + (base[num % 10] == "Zero" ? "" : " " + base[num % 10]);
 	}
 	return result;
-}
-double Solution::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-
 }
