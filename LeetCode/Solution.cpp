@@ -2644,7 +2644,6 @@ int Solution::removeDuplicates(vector<int>& nums) {
     return pre;
 }
 
-<<<<<<< HEAD
 void Solution::setHelper(vector<vector<int>>& matrix, vector<int> &cols, int start, int end, int row) {
     int size = matrix[0].size(), begin = start;
     if (row >= matrix.size() || start < 0 || end >= size) {

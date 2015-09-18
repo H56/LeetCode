@@ -207,7 +207,6 @@ public:
     vector<vector<int>> subsets(vector<int>& nums);
     bool exist(vector<vector<char>>& board, string word);
     int removeDuplicates(vector<int>& nums);
-<<<<<<< HEAD
 private:
     void setHelper(vector<vector<int>>& matrix, vector<int> &cols, int start, int end, int row);
 public:
