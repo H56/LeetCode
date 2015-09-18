@@ -2904,11 +2904,18 @@ double Solution::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) 
         if (numsSmall[midSmall] < numsLarge[midAll]) {
             leftSmall = midSmall + 1;
         }
-        else {
+        else if (numsSmall[midSmall] > numsLarge[midAll]) {
             rightSmall = midSmall - 1;
+        } else {
+            break;
         }
     }
-    return midSmall;
+    int L1 = numsSmall[midSmall];
+    int R1 = midSmall ? numsSmall[midSmall - 1] : INT_MAX;
+    int L2 = numsLarge[midAll];
+    int R2 = midAll ? numsLarge[midAll - 1] : INT_MAX;
+    int L = max(L1, L2), R = min(R1, R2);
+    return (size1 + size2) & 0x1 ? min(L, R) : (double)(L + R) / 2.0;
 }
 
 int Solution::hIndex(vector<int>& citations) {
