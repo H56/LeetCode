@@ -3037,3 +3037,15 @@ string Solution::numberToWords(int num) {
 	}
 	return result;
 }
+
+int Solution::trap(vector<int>& height) {
+    if (height.empty()) return 0;
+    auto left = height.begin(), right = height.end() - 1;
+    int level = 0, water = 0;
+    while (left != right + 1) {
+        int lower = *left < *right ? *left++ : *right--;
+        level = max(level, lower);
+        water += level - lower;
+    }
+    return water;
+}
