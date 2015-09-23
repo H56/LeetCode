@@ -3049,3 +3049,29 @@ int Solution::trap(vector<int>& height) {
     }
     return water;
 }
+
+int Solution::numDistinct(string &s, string &t, int starts, int startt) {
+    int count = 0;
+/*
+    // DP 0
+    vector<vector<int>> matrix(t.length() + 1, vector<int>(s.length() + 1, 0));
+    for (auto &it : matrix[0]) it = 1;
+    for (int i = 1; i <= s.length(); ++i) {
+        for (int j = 1; j <= t.length(); ++j) {
+            matrix[j][i] = matrix[j][i - 1] + (s[i - 1] == t[j - 1] ? matrix[j - 1][i - 1] : 0);
+        }
+    }
+    return matrix[t.length()][s.length()];
+*/
+    vector<int> store(t.length() + 1, 0);
+    store[0] = 1;
+    for (int i = 1; i <= s.length(); ++i) {
+        int pre = 1;
+        for (int j = 1; j <= t.length(); ++j) {
+            int tmp = store[j];
+            store[j] += (s[i - 1] == t[j - 1] ? pre : 0);
+            pre = tmp;
+        }
+    }
+    return store[t.length()];
+}

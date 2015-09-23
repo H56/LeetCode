@@ -228,5 +228,6 @@ public:
     vector<Interval> insert(vector<Interval>& intervals, Interval newInterval);
     string numberToWords(int num);
     int trap(vector<int>& height);
+    int numDistinct(string &s, string &t, int starts = 0, int startt = 0);
 };
 
