@@ -228,6 +228,8 @@ public:
     vector<Interval> insert(vector<Interval>& intervals, Interval newInterval);
     string numberToWords(int num);
     int trap(vector<int>& height);
-    int numDistinct(string &s, string &t, int starts = 0, int startt = 0);
+    int numDistinct(string &s, string &t);
+	int minDistance(string word1, string word2);
+	bool isScramble(string s1, string &s2, int start = 0);
 };
 

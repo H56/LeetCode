@@ -7,7 +7,7 @@ int main(void) {
     Solution so;
     string str1, str2;
     while (cin >> str1 >> str2) {
-        cout << so.numDistinct(str1, str2) << endl;
+        cout << boolalpha << so.isScramble(str1, str2) << endl;
     }
     system("pause");
 	return 0;

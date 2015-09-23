@@ -3050,7 +3050,7 @@ int Solution::trap(vector<int>& height) {
     return water;
 }
 
-int Solution::numDistinct(string &s, string &t, int starts, int startt) {
+int Solution::numDistinct(string &s, string &t) {
     int count = 0;
 /*
     // DP 0
@@ -3063,6 +3063,7 @@ int Solution::numDistinct(string &s, string &t, int starts, int startt) {
     }
     return matrix[t.length()][s.length()];
 */
+	// DP 1
     vector<int> store(t.length() + 1, 0);
     store[0] = 1;
     for (int i = 1; i <= s.length(); ++i) {
@@ -3074,4 +3075,42 @@ int Solution::numDistinct(string &s, string &t, int starts, int startt) {
         }
     }
     return store[t.length()];
+}
+
+int Solution::minDistance(string word1, string word2) {
+	int m = word1.length(), n = word2.length();
+	vector<vector<int>> mat(m + 1, vector<int>(n + 1, 0));
+	for (int i = 1; i <= m; ++i) {
+		mat[i][0] = i;
+	}
+	for (int j = 1; j <= n; ++j) {
+		mat[0][j] = j;
+	}
+	for (int i = 1; i <= m; ++i) {
+		for (int j = 1; j <= n; ++j) {
+			if (word1[i - 1] == word2[j - 1]) {
+				mat[i][j] = mat[i - 1][j - 1];
+			} else {
+				mat[i][j] = min(mat[i - 1][j], min(mat[i - 1][j - 1], mat[i][j - 1]));
+			}
+		}
+	}
+	return mat[m][n];
+}
+
+bool Solution::isScramble(string s1, string &s2, int start) {
+	bool ret = false;
+	if (s1.length() <= start) {
+		return true;
+	}
+	for (int i = start; !ret && i < s1.length(); ++i) {
+		if (s1[i] == s2[start]) {
+			int tmp1 = i, tmp2 = start;
+			while (tmp1 > tmp2) {
+				swap(s1[tmp1], s1[tmp2]);
+			}
+			ret |= isScramble(s1, s2, start + 1);
+		}
+	}
+	return ret;
 }
