@@ -231,5 +231,6 @@ public:
     int numDistinct(string &s, string &t);
 	int minDistance(string word1, string word2);
 	bool isScramble(string s1, string &s2, int start = 0);
+	int findDuplicate(vector<int>& nums);
 };
 

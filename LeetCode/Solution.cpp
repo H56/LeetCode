@@ -3114,3 +3114,18 @@ bool Solution::isScramble(string s1, string &s2, int start) {
 	}
 	return ret;
 }
+
+int Solution::findDuplicate(vector<int>& nums) {
+	int fast = 0, slow = 0;
+	do {
+		slow = nums[slow];
+		fast = nums[nums[fast]];
+	} while(slow != fast);
+	fast = 0;
+	do {
+		slow = nums[slow];
+		fast = nums[fast];
+	} while (slow != fast);
+	return slow;
+}
+
